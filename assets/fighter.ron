@@ -1,0 +1,1005 @@
+(
+    name: "name",
+    resources: {
+        "air_block_stun": "assets/image/air_block_stun.png",
+        "air_block1": "assets/image/air_block1.png",
+        "air_hit_stun": "assets/image/air_hit_stun.png",
+        "air_light_active": "assets/image/air_light_active.png",
+        "air_light_recovery": "assets/image/air_light_recovery.png",
+        "air_light_startup": "assets/image/air_light_startup.png",
+        "air1": "assets/image/air1.png",
+        "crouch_block_stun": "assets/image/crouch_block_stun.png",
+        "crouch_block1": "assets/image/crouch_block1.png",
+        "crouch_hit_stun": "assets/image/crouch_hit_stun.png",
+        "crouch_light_active": "assets/image/crouch_light_active.png",
+        "crouch_light_recovery": "assets/image/crouch_light_recovery.png",
+        "crouch_light_startup": "assets/image/crouch_light_startup.png",
+        "crouch1": "assets/image/crouch1.png",
+        "jump_backward1": "assets/image/jump_backward1.png",
+        "jump_forward1": "assets/image/jump_forward1.png",
+        "jump_neutral1": "assets/image/jump_neutral1.png",
+        "jump_startup1": "assets/image/jump_startup1.png",
+        "knockdown": "assets/image/knockdown.png",
+        "stand_block_stun": "assets/image/stand_block_stun.png",
+        "stand_block1": "assets/image/stand_block1.png",
+        "stand_hit_stun": "assets/image/stand_hit_stun.png",
+        "stand_light_active": "assets/image/stand_light_active.png",
+        "stand_light_recovery": "assets/image/stand_light_recovery.png",
+        "stand_light_startup": "assets/image/stand_light_startup.png",
+        "stand1": "assets/image/stand1.png",
+        "stand2": "assets/image/stand2.png",
+        "wakeup": "assets/image/wakeup.png",
+        "walk_backward1": "assets/image/walk_backward1.png",
+        "walk_backward2": "assets/image/walk_backward2.png",
+        "walk_forward1": "assets/image/walk_forward1.png",
+        "walk_forward2": "assets/image/walk_forward2.png",
+    },
+    collision_boxes: {
+        "body": (
+            position: (0.0, 80.0),
+            extent: (20.0, 80.0),
+        ),
+    },
+    states: {
+        // Stand
+        "stand": (
+            duration: 1.0,
+            animation: ["stand1","stand2"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            input_transition: {
+                "backward": "walk_backward",
+                "forward": "walk_forward",
+                "down": "crouch",
+                "up": "jump_startup",
+                "light": "light1_startup",
+                // "heavy": "heavy1_startup",
+                "heavy": "knockdown",
+            },
+            walk_speed: 480.0,
+            on_air_transition: Some("air"),
+            on_hit_transition: Some("stand_hit_stun"),
+            auto_facing: true,
+        ),
+        // Walk Backward
+        "walk_backward": (
+            duration: 1.0,
+            animation: ["walk_backward1","walk_backward2","walk_backward1","walk_backward2"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            input_transition: {
+                "!backward,!forward": "stand",
+                "!backward,forward": "walk_forward",
+                "down": "crouch",
+                "up": "jump_startup",
+                "light": "light1_startup",
+            },
+            move_backward: 480.0,
+            on_air_transition: Some("air"),
+            on_hit_transition: Some("stand_block_stun"),
+            blocking: true,
+            auto_facing: true,
+        ),
+        // Walk Forward
+        "walk_forward": (
+            duration: 1.0,
+            animation: ["walk_forward1","walk_forward2","walk_forward1","walk_forward2"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            input_transition: {
+                "!backward,!forward": "stand",
+                "backward,!forward": "walk_backward",
+                "down": "crouch",
+                "up": "jump_startup",
+                "light": "light1_startup",
+            },
+            move_forward: 480.0,
+            on_air_transition: Some("air"),
+            on_hit_transition: Some("stand_hit_stun"),
+            auto_facing: true,
+        ),
+        // Crouch
+        "crouch": (
+            duration: 1.0,
+            animation: ["crouch1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 110.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 40.0),
+                    extent: (40.0, 40.0),
+                ),
+            },
+            input_transition: {
+                "!down": "stand",
+                "up": "jump_startup",
+                "backward":"crouch_block",
+                "light": "crouch_light_startup",
+                // "heavy":"crouch_heavy_startup",
+            },
+            on_hit_transition: Some("crouch_hit_stun"),
+            auto_facing: true,
+        ),
+        // Jump / Air
+        "jump_startup": (
+            duration: 0.05,
+            animation: ["jump_startup1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            on_duration_end_input_transition: {
+                "": "jump_neutral_active",
+                "backward": "jump_backward_active",
+                "forward": "jump_forward_active",
+            },
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        "jump_neutral_active": (
+            duration: 0.05,
+            animation: ["jump_neutral1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            jump_height: 320.0,
+            auto_transition: Some("jump_neutral"),
+            on_hit_transition: Some("air_hit_stun"),
+        ),
+        "jump_neutral": (
+            duration: 0.5,
+            animation: ["jump_neutral1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            on_ground_transition: Some("stand"),
+            on_hit_transition: Some("air_hit_stun"),
+        ),
+        "jump_forward_active": (
+            duration: 0.5,
+            animation: ["jump_forward1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            jump_height: 320.0,
+            move_forward: 480.0,
+            auto_transition: Some("jump_forward"),
+            on_hit_transition: Some("air_hit_stun"),
+        ),
+        "jump_forward": (
+            duration: 0.5,
+            animation: ["jump_forward1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            move_forward: 480.0,
+            on_ground_transition: Some("stand"),
+            on_hit_transition: Some("air_hit_stun"),
+        ),
+        "jump_backward_active": (
+            duration: 0.5,
+            animation: ["jump_backward1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            jump_height: 320.0,
+            move_backward: 480.0,
+            auto_transition: Some("jump_backward"),
+            on_hit_transition: Some("air_hit_stun"),
+        ),
+        "jump_backward": (
+            duration: 0.5,
+            animation: ["jump_backward1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            move_backward: 480.0,
+            on_ground_transition: Some("stand"),
+            on_hit_transition: Some("air_hit_stun"),
+        ),
+        "air": (
+            duration: 1.0,
+            walk_speed: 480.0,
+            animation: ["air1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            input_transition: {
+                "backward": "air_block",
+                "light": "air_light_startup",
+                // "heavy": "air_heavy_startup",
+            },
+            on_ground_transition: Some("stand"),
+            on_hit_transition: Some("air_hit_stun"),
+            auto_facing: true,
+        ),
+        // Stand Block
+        "stand_block": (
+            duration: 1.0,
+            animation: ["stand_block1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            input_transition: {
+                "!backward": "stand",
+                "down,backward": "crouch_block",
+            },
+            on_air_transition: Some("air_block"),
+            on_hit_transition: Some("stand_block_stun"),
+            blocking: true,
+            auto_facing: true,
+        ),
+        // Air Block
+        "air_block": (
+            duration: 1.0,
+            animation: ["air_block1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            input_transition: {
+                "!backward": "air",
+            },
+            on_ground_transition: Some("stand_block"),
+            on_hit_transition: Some("air_block_stun"),
+            blocking: true,
+            auto_facing: true,
+        ),
+        // Crouch Block
+        "crouch_block": (
+            duration: 1.0,
+            animation: ["crouch_block1"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 110.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 40.0),
+                    extent: (40.0, 40.0),
+                ),
+            },
+            input_transition: {
+                "!backward": "crouch",
+                "!down,backward": "stand_block",
+            },
+            on_air_transition: Some("air_block"),
+            on_hit_transition: Some("crouch_block_stun"),
+            blocking: true,
+            auto_facing: true,
+        ),
+        // Stand Hit Stun
+        "stand_hit_stun": (
+            duration: 1.0,
+            animation: ["stand_hit_stun"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            on_air_transition: Some("air_hit_stun"),
+            on_hit_transition: Some("stand_hit_stun"),
+            on_stun_end_transition: Some("stand"),
+        ),
+        // Crouch Hit Stun
+        "crouch_hit_stun": (
+            duration: 1.0,
+            animation: ["crouch_hit_stun"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 110.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 40.0),
+                    extent: (40.0, 40.0),
+                ),
+            },
+            on_air_transition: Some("air_hit_stun"),
+            on_hit_transition: Some("crouch_hit_stun"),
+            on_stun_end_transition: Some("crouch"),
+        ),
+        // Air Hit Stun
+        "air_hit_stun": (
+            duration: 1.0,
+            animation: ["air_hit_stun"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            on_ground_transition: Some("knockdown"),
+            on_hit_transition: Some("air_hit_stun"),
+            on_stun_end_transition: Some("air"),
+        ),
+        // Stand Block Stun
+        "stand_block_stun": (
+            duration: 1.0,
+            animation: ["stand_block_stun"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            on_air_transition: Some("air_block_stun"),
+            on_hit_transition: Some("stand_block_stun"),
+            on_stun_end_transition: Some("stand"),
+            blocking: true,
+        ),
+        // Crouch Block Stun
+        "crouch_block_stun": (
+            duration: 1.0,
+            animation: ["crouch_block_stun"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 110.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 40.0),
+                    extent: (40.0, 40.0),
+                ),
+            },
+            on_air_transition: Some("air_block_stun"),
+            on_hit_transition: Some("crouch_block_stun"),
+            on_stun_end_transition: Some("crouch_block"),
+            blocking: true,
+        ),
+        // Air Block Stun
+        "air_block_stun": (
+            duration: 1.0,
+            animation: ["air_block_stun"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+            },
+            on_ground_transition: Some("stand_block_stun"),
+            on_hit_transition: Some("air_block_stun"),
+            on_stun_end_transition: Some("air_block"),
+            blocking: true,
+        ),
+        // Knockdown
+        "knockdown": (
+            duration: 1.0,
+            animation: ["knockdown"],
+            hurt_boxes: {
+                "head": (
+                    position: (-40.0, 20.0),
+                    extent: (20.0, 15.0),
+                ),
+                "body": (
+                    position: (0.0, 20.0),
+                    extent: (20.0, 20.0),
+                ),
+                "feet": (
+                    position: (40.0, 20.0),
+                    extent: (20.0, 20.0),
+                ),
+            },
+            input_transition: {
+                "backward": "wakeup",
+                "forward": "wakeup",
+                "up": "wakeup",
+            },
+        ),
+        // Wakeup
+        "wakeup": (
+            duration: 0.5,
+            animation: ["wakeup"],
+            auto_transition: Some("stand")
+        ),
+        // Throw
+        "throw_startup": (
+            duration: 0.1,
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "hand": (
+                    position: (40.0, 120.0),
+                    extent: (20.0, 20.0),
+                ),
+            },
+            auto_transition: Some("throw_active"),
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        "throw_active": (
+            duration: 0.05,
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "hand": (
+                    position: (40.0, 120.0),
+                    extent: (20.0, 20.0),
+                ),
+            },
+            throw_boxes: {
+                "hand": (
+                    position: (40.0, 120.0),
+                    extent: (20.0, 20.0),
+                ),
+            },
+            throw_trasition: Some("throw_wait"),
+            auto_transition: Some("throw_recovery"),
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        "throw_recovery": (
+            duration: 0.1,
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "hand": (
+                    position: (40.0, 120.0),
+                    extent: (20.0, 20.0),
+                ),
+            },
+            auto_transition: Some("stand"),
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        "throw_wait": (
+            duration: 0.1,
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "hand": (
+                    position: (40.0, 120.0),
+                    extent: (20.0, 20.0),
+                ),
+            },
+            throw_escape: true,
+            throw_lock: true,
+            auto_transition: Some("throw_success"),
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        "throw_success": (
+            duration: 0.1,
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "hand": (
+                    position: (40.0, 120.0),
+                    extent: (20.0, 20.0),
+                ),
+            },
+            input_transition: {
+                "backward":"throw_forward",
+                "forward":"throw_forward",
+                "up":"throw_forward",
+                "down":"throw_forward",
+            },
+            throw_lock: true,
+            auto_transition: Some("throw_fail"),
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        "throw_fail": (
+            duration: 0.1,
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "hand": (
+                    position: (40.0, 120.0),
+                    extent: (20.0, 20.0),
+                ),
+            },
+            auto_transition: Some("stand"),
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        "throw_forward": (
+            duration: 0.1,
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "hand": (
+                    position: (40.0, 120.0),
+                    extent: (20.0, 20.0),
+                ),
+            },
+            throw_damage: 100.0,
+            auto_transition: Some("stand"),
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        // Stand Light
+        "light1_startup": (
+            duration: 0.1,
+            animation: ["stand_light_startup"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "hand": (
+                    position: (80.0, 120.0),
+                    extent: (40.0, 20.0),
+                ),
+            },
+            auto_transition: Some("light1_active"),
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        "light1_active": (
+            duration: 0.05,
+            animation: ["stand_light_active"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "hand": (
+                    position: (80.0, 120.0),
+                    extent: (40.0, 20.0),
+                ),
+            },
+            hit_boxes: {
+                "hand": (
+                    position: (80.0, 120.0),
+                    extent: (40.0, 20.0),
+                ),
+            },
+            hit_data: (
+                hit_stun: 0.25,
+                hit_damage: 100.0,
+                hit_knockback_x: 50.0,
+                block_stun: 0.15,
+                block_damage: 1.0,
+                block_knockback_x: 5.0,
+            ),
+            auto_transition: Some("light1_recovery"),
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        "light1_recovery": (
+            duration: 0.1,
+            animation: ["stand_light_recovery"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "hand": (
+                    position: (80.0, 120.0),
+                    extent: (40.0, 20.0),
+                ),
+            },
+            auto_transition: Some("stand"),
+            on_hit_transition: Some("stand_hit_stun"),
+        ),
+        // Crouch Light
+        "crouch_light_startup": (
+            duration: 0.1,
+            animation: ["crouch_light_startup"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 110.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 40.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (80.0, 20.0),
+                    extent: (40.0, 20.0),
+                ),
+            },
+            auto_transition: Some("crouch_light_active"),
+            on_hit_transition: Some("crouch_hit_stun"),
+        ),
+        "crouch_light_active": (
+            duration: 0.05,
+            animation: ["crouch_light_active"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 110.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 40.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (80.0, 20.0),
+                    extent: (40.0, 20.0),
+                ),
+            },
+            hit_boxes: {
+                "feet": (
+                    position: (80.0, 20.0),
+                    extent: (40.0, 20.0),
+                ),
+            },
+            hit_data: (
+                hit_stun: 0.25,
+                hit_damage: 100.0,
+                hit_knockback_x: 50.0,
+                block_stun: 0.15,
+                block_damage: 1.0,
+                block_knockback_x: 5.0,
+            ),
+            auto_transition: Some("crouch_light_recovery"),
+            on_hit_transition: Some("crouch_hit_stun"),
+        ),
+        "crouch_light_recovery": (
+            duration: 0.1,
+            animation: ["crouch_light_recovery"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 110.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 40.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (80.0, 20.0),
+                    extent: (40.0, 20.0),
+                ),
+            },
+            auto_transition: Some("crouch"),
+            on_hit_transition: Some("crouch_hit_stun"),
+        ),
+        // Air Light
+        "air_light_startup": (
+            duration: 0.1,
+            animation: ["air_light_startup"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "feet2": (
+                    position: (60.0, 40.0),
+                    extent: (30.0, 20.0),
+                ),
+            },
+            auto_transition: Some("air_light_active"),
+            on_hit_transition: Some("air_hit_stun"),
+            on_ground_transition: Some("stand"),
+        ),
+        "air_light_active": (
+            duration: 0.05,
+            animation: ["air_light_active"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "feet2": (
+                    position: (60.0, 40.0),
+                    extent: (30.0, 20.0),
+                ),
+            },
+            hit_boxes: {
+                "feet2": (
+                    position: (60.0, 40.0),
+                    extent: (30.0, 20.0),
+                ),
+            },
+            hit_data: (
+                hit_stun: 0.25,
+                hit_damage: 100.0,
+                hit_knockback_x: 50.0,
+                block_stun: 0.15,
+                block_damage: 1.0,
+                block_knockback_x: 5.0,
+            ),
+            auto_transition: Some("air_light_recovery"),
+            on_hit_transition: Some("air_hit_stun"),
+            on_ground_transition: Some("stand"),
+        ),
+        "air_light_recovery": (
+            duration: 0.1,
+            animation: ["air_light_recovery"],
+            hurt_boxes: {
+                "head": (
+                    position: (0.0, 170.0),
+                    extent: (15.0, 10.0),
+                ),
+                "body": (
+                    position: (0.0, 120.0),
+                    extent: (40.0, 40.0),
+                ),
+                "feet": (
+                    position: (0.0, 40.0),
+                    extent: (35.0, 40.0),
+                ),
+                "feet2": (
+                    position: (60.0, 40.0),
+                    extent: (30.0, 20.0),
+                ),
+            },
+            auto_transition: Some("air"),
+            on_hit_transition: Some("air_hit_stun"),
+            on_ground_transition: Some("stand"),
+        ),
+    },
+)

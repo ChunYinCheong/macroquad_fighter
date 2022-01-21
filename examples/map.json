@@ -1,0 +1,41 @@
+{ "compressionlevel":-1,
+ "height":10,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[1, 2, 22, 2, 22, 2, 22, 2, 22, 4, 5, 2, 22, 2, 22, 2, 22, 2, 22, 3, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 41, 22, 42, 22, 42, 22, 42, 22, 42, 24, 25, 22, 42, 22, 42, 22, 42, 22, 42, 43],
+         "height":10,
+         "id":1,
+         "name":"main layer",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":2,
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.7.2",
+ "tileheight":100,
+ "tilesets":[
+        {
+         "columns":20,
+         "firstgid":1,
+         "image":"tileset.png",
+         "imageheight":2000,
+         "imagewidth":2000,
+         "margin":0,
+         "name":"tileset",
+         "spacing":0,
+         "tilecount":400,
+         "tileheight":100,
+         "tilewidth":100
+        }],
+ "tilewidth":100,
+ "type":"map",
+ "version":"1.6",
+ "width":20
+}

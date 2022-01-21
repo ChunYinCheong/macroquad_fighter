@@ -1,0 +1,16 @@
+[
+    (
+        distance_x: (100.0, 800.0),
+        distance_y: (0.0, 200.0),
+        ai_input: (
+            forward: true,
+        ),
+    ),
+    (
+        distance_x: (0.0, 100.0),
+        distance_y: (0.0, 200.0),
+        ai_input: (
+            light: true,
+        ),
+    ),
+]
